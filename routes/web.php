@@ -36,6 +36,5 @@ Route::prefix('admin')->group(function () {
 	Route::get('/sort/{num?}', 'UserController@sortpage')->name('csv.CsvGenerate');
 
 	
-
 });	
 

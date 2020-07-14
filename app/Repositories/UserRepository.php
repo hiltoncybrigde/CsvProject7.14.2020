@@ -3,6 +3,7 @@
 namespace App\Repositories;
 use DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 //use Your Model
 
 /**
@@ -23,5 +24,12 @@ class UserRepository
             'password' => Hash::make($data['password']),
             ]);
         return $user_id;
+    }
+
+    public function sortWithFirstLetter($num)
+    {
+        $users = DB::table('users')->where('name','like', $num.'%')->get();
+        Session::put('usersexport', $users);
+        return $users;
     }
 }

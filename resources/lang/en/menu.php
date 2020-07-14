@@ -15,5 +15,6 @@ return [
 
     'myblog' => 'Adminer',
     'user' => 'Manager',
+    'export' => 'Sort & Export',
 
 ];

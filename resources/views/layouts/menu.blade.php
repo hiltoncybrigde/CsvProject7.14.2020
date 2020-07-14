@@ -237,6 +237,9 @@
 				<ul class="navbar-nav">
 					<li class="nav-item">
 						<a href="{{ route('admin.manager') }}" class="nav-links d-block"><i class="fa fa-user-plus pr-2"></i> {{ __('menu.user') }}</a>
+					</li>					
+					<li class="nav-item">
+						<a href="{{ route('csv.CsvGenerate', []) }}" class="nav-links d-block"><i class="fa fa-file-excel-o pr-2"></i> {{ __('menu.export') }}</a>
 					</li>
 						@guest
                             <li class="nav-item">
@@ -270,6 +273,9 @@
 				</div>
 				<div class="icons d-flex flex-column align-items-center">
 					<a href="{{ route('admin.manager') }}" class="set-width text-center display-inline-block my-1"><i class="fa fa-user-plus"></i></a>			
+				</div>
+				<div class="icons d-flex flex-column align-items-center">
+					<a href="{{ route('csv.CsvGenerate', []) }}" class="set-width text-center display-inline-block my-1"><i class="fa fa-file-excel-o"></i></a>			
 				</div>
 			</div>
 		</div>

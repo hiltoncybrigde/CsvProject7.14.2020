@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Session;
 use Cache;
 use Carbon\Carbon;
 use Auth;
+
 class UserController extends Controller
 {
 
@@ -53,7 +54,7 @@ class UserController extends Controller
         $admin = auth()->user();
         $data  = $request->all();
 
-        $data?$this->eventByModelAfterCreateRequest($data)
+        $data?$this->getModelAfterCreateRequest($data)
             :$this->returnWithError($data);
 
         return redirect()->back();
@@ -97,10 +98,12 @@ class UserController extends Controller
             $user      = User::findOrFail($data['id']);
 
             User::where('id', $user->id)->update([
+
                 'name'   =>  $data['name'],
                 'address'   =>  $data['address'],
                 'photo1' =>  asset('storage/uploads/'.$na),
                 'photo2' =>  base64_encode(asset('storage/uploads/'.$na)),
+
             ]);
 
             $path?Session::flash('image_status','storage/uploads/'.$na):Session::flash('image_status', 'image uploaded fail!!');
@@ -114,22 +117,27 @@ class UserController extends Controller
                 'name' => $data['name'],
                 'address'   =>  $data['address'],
             ]);
-            
+
+            \Log::info('update successfully');
             return redirect()->back();
         }
-        else{  
+        else{
+
             \Log::error('cannot update');
             return $this->returnWithError($data);
         }
 
     }
 
-    //DB::table('users')->where('name','like','E%')->get();
+    /**
+     * [sortpage description]
+     * @param  [type] $num [description]
+     * @return [type]      [description]
+     */
     public function sortpage($num = null)
     {
        if($num != NULL || $num != ''){ 
-       $users = $this->sortWithFirstLetter($num);
-       Session::put('usersexport', $users);
+       $users = $this->userRepository->sortWithFirstLetter($num);
         }
         else{
        $users = User::orderBy('name')->paginate(10);
@@ -149,15 +157,11 @@ class UserController extends Controller
                     ->withInput();
     }
 
-    public function eventByModelAfterCreateRequest($data)
+    public function getModelAfterCreateRequest($data)
     {
         $user_id = $this->userRepository->createAndGetID($data);
             $user_this = User::find($user_id);
             \Log::info("user has been added ".$user_this);
-    }
-    public function sortWithFirstLetter($num)
-    {
-        return $users = DB::table('users')->where('name','like', $num.'%')->get();
     }
  	/////////////////////////config/////////////////////////////////////////
 }
